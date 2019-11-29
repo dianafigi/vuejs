@@ -1,0 +1,57 @@
+
+<!-- Put this in the HTML section in JSFiddle! -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<div id="app">
+  <p v-if="show">You can see me!</p>
+  <p v-else>Now you see me!</p>
+  <template v-if="show">
+    <h1>Template's Heading</h1>
+    <p>Inside a template</p>
+  </template>
+  <p v-show="show">Do you also see me?</p>
+  <!-- diferença entre v-if e v-show é q o if remove da DOM, o show coloca um display:none, logo fica na DOM e visivel no 'inspect' -->
+  <button @click="show = !show">Switch</button>
+  <br>
+  <hr>
+  <br>
+  <ul>
+    <li v-for="(ingredient, i) in ingredients":key="ingredient">{{ ingredient }} ({{i}})</li>
+    <!-- em Vue o 1º elemento 'ingredient' é smp o elemento e o 2º é smp o index -->
+    <!-- a :key é para fazer com q o novo elemento fique bem posicionado(???) -->
+  </ul>
+  <button @click="ingredients.push('spices')">Add New</button>
+  <!-- qd clico adiciona o 'spices' aos ingredientes -->
+  <template v-for="(ingredient, index) in ingredients">
+    <h1>{{ ingredient }}</h1>
+    <p>{{index}}</p>
+  </template>
+  <br>
+  <hr>
+  <br>
+  <ul>
+    <li v-for="person in persons">
+      <div v-for="(value, key, index) in person">{{key}}: {{value}} ({{index}})</div>
+      <!-- posso dar qq nome a estes 3. O 1º é sempre o valor dado à propriedade, o 2º é o nome da propriedade, o 3º e o index. Isto sao caracteristicas de um objecto -->
+    </li>
+  </ul>
+  <br>
+  <hr>
+  <br>
+  <span v-for="n in 10">{{n}}</span>
+  <!-- posso dar qq nome ao 'n' pe 'i', 'batatas'. O 10 tem de ser um numero, o vue vai começar no primeiro até ao numero q dou, neste caso numero 10 -->
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      show: true,
+      ingredients: ['meat', 'fruit', 'cookies'],
+      persons: [
+        {name: 'Max', age: 27, color: 'red'},
+        {name: 'Ana', age: 'unknown', color: 'blue'}
+      ]
+    }
+  })
+</script>

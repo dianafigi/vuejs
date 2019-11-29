@@ -1,0 +1,86 @@
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<div id="app1">
+  <h1 ref="heading">{{ title }}</h1>
+  <button v-on:click="show" ref="myButton">Show Paragraph</button>
+  <!-- ref é uma key adicionada pelo VueJS. Serve para conseguir seleccionar o elemento, neste caso o button. Portanto pode ser usada em qq elemento html -->
+  <p v-if="showParagraph">This is not always visible</p>
+</div>
+<br>
+<div id="app2">
+  <h1 ref="heading">{{ title }}</h1>
+  <button @click="onChange">Change something on Vue Instance 1</button>
+  <hello></hello>
+  <hello></hello>
+</div>
+<br>
+<div id="app3">
+
+</div>
+
+<script>
+  var data = {
+    title: 'The VueJS Instance',
+    showParagraph: false
+  }
+
+  Vue.component('hello', {
+    template: '<h1>hello!</h1>'
+  });
+
+  var vm1 = new Vue({
+    data: data, //a segunda 'data' vem da var criada acima
+    methods: {
+      show: function() {
+        this.showParagraph = true;
+        this.updateTitle('The VueJS Instance (Updated)');
+        this.$refs.myButton.innerText = 'Test'; //$refs a ser usado para alterar conteudo. A ser usado dentro da instancia, mas tb pode ter usado fora (ver abaixo)
+        //NOTA: o $refs nao é aconselhado a ser usado para alterar conteudo, apenas para seleccionar elementos
+      },
+      updateTitle: function(title) {
+        this.title = title;
+      }
+    },
+    computed: {
+      lowercaseTitle: function() {
+        return this.title.toLowerCase();
+      }
+    },
+    watch: {
+      title: function(value) {
+        alert('Title changed, new value: ' + value);
+      }
+    }
+  });
+
+  vm1.$mount('#app1');
+
+  console.log(vm1.$data === data); //no console vai aparecer 'true'
+  vm1.$refs.heading.innerText = 'Something else'; //$refs a ser usado fora da instancia para alterar conteudo
+
+  setTimeout(function() {
+    vm1.title = 'Changed by the timer!'
+  }, 2000);
+
+  var vm2 = new Vue({
+    el: '#app2',
+    data: {
+      title: 'The SECOND VueJS Instance',
+      showParagraph: false
+    },
+    methods: {
+      onChange: function() {
+        vm1.title = 'Changed!';
+      }
+    }
+  });
+
+  var vm3 = new Vue({
+    template: '<h1>Hello!</h1>'
+  });
+
+  vm3.$mount('#app3');
+  //OU
+  // vm3.$mount();
+  // document.getElementById('app3').appendChild(vm3.$el);
+</script>

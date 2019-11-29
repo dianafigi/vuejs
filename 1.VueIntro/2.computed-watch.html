@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VueJS</title>
+  <script src="vue.min.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <!-- @ é o mesmo que of v-on:  -->
+    <button v-on:click="counter++">Increase</button>
+    <button v-on:click="counter--">Decrease</button>
+    <button v-on:click="secondCounter++">Increase Second</button>
+    <p>Counter: {{counter}}  |  {{secondCounter}}</p>
+    <p>Result: {{result}}  |  {{output}}</p>
+  </div>
+
+<script>
+  new Vue({
+    el:'#app',
+    data: {
+      title: 'Hello World!',
+      link: 'http://google.com',
+      counter: 0,
+      secondCounter: 0,
+      x: 0,
+      y: 0,
+      counterDouble: 0,
+    },
+    // method: {    O method é aplicado smp (?)
+    //   result: function(){
+    //     return this.counter > 5 ? 'greater than 5' : 'smaller than 5';
+    //   }
+    // },
+    computed: {
+      output: function(){
+        return this.counter > 5 ? 'greater than 5' : 'smaller than 5';
+      }
+    },
+    watch: { //ao fim de 2 segundos o counter volta a ter 0
+      counter: function(value) {
+        var vm = this;
+        setTimeout(function() {
+          vm.counter = 0;
+        }, 2000);
+      }
+    }
+  });
+</script>
+</body>
+</html>

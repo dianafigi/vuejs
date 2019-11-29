@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>VueJS</title>
+  <script src="vue.min.js"></script>
+</head>
+<body>
+
+  <div id="app">
+    <h1 v-once>{{ title }}</h1>
+    <!-- v-once : mostra o titulo inicial q está na instancia -->
+    <input type="text" v-on:input="changeTitle">
+    <!-- v-on : recebe algo do template, pode receber eventos (click, mouseleave, etc) -->
+    <!-- <p> {{ sayHello() }} </p> -->
+    <p>{{ title }} - <a v-bind:href="link">Google</a></p>
+    <!-- for any links; estou a dizer q o 'href' é o atributo ao qual quero fazer 'bind' -->
+    <button v-on:click="increase">Click me!</button>
+    <p>{{counter}}</p>
+    <p v-on:mousemove="updateCoordiantes">
+      Coordinates: {{x}} / {{y}}
+      - <span v-on:mousemove.stop>DEAD SPOT</span>
+      <!-- equivale ao stopPropagation; o 'prevent' equivale ao preventDefault; os dois juntos: '<span v-on:mousemove.stop.prevent></span>' -->
+    </p>
+    <button v-on:click="increaseDouble(2, $event)">Click me!</button>
+    <!-- $event é um objecto do vueJS, é tipo o event do js, mas no js nao é passado para a funçao qd essa é chamada -->
+    <p>{{counterDouble}}</p>
+    <input v-on:keyup.enter.space="alertMe" type="text" value="Type a phrase!">
+  </div>
+
+<script>
+  new Vue({
+    el:'#app',
+    data: {
+      title: 'Hello World!',
+      link: 'http://google.com',
+      counter: 0,
+      x: 0,
+      y: 0,
+      counterDouble: 0,
+    },
+    methods: {
+      changeTitle: function(event) {
+        this.title = event.target.value;
+      },
+      //same as: (to be used with the commented above on title)
+      // sayHello: function(){
+      //   return this.title;
+      // }
+      increase: function() {
+        this.counter++;
+      },
+      updateCoordiantes: function(event){
+        this.x = event.clientX;
+        this.y = event.clientY;
+        //default properties names of the event object
+      },
+      increaseDouble: function(step, event) {
+        this.counterDouble += step;
+      },
+      alertMe: function(){
+        alert('Alert! Spaceeee!')
+      }
+    }
+  });
+</script>
+</body>
+</html>
